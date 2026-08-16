@@ -146,6 +146,7 @@ namespace Anarchy
             updateSystem.UpdateBefore<ElevateObjectDefinitionSystem>(SystemUpdatePhase.Modification1);
             updateSystem.UpdateBefore<NetworkDefinitionSystem>(SystemUpdatePhase.Modification1);
             updateSystem.UpdateAt<SetRetainingWallSegmentElevationSystem>(SystemUpdatePhase.ModificationEnd);
+            updateSystem.UpdateAfter<ForcedTunnelNodeElevationSystem, SetRetainingWallSegmentElevationSystem>(SystemUpdatePhase.ModificationEnd);
             updateSystem.UpdateBefore<TempNetworkSystem, CompositionSelectSystem>(SystemUpdatePhase.Modification3);
             updateSystem.UpdateAt<NetworkAnarchyUISystem>(SystemUpdatePhase.UIUpdate);
             updateSystem.UpdateAt<AnarchyComponentsToolSystem>(SystemUpdatePhase.ToolUpdate);

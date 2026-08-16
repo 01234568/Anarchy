@@ -186,7 +186,7 @@ namespace Anarchy.Systems.NetworkAnarchy
                     // Removed some code below that was related to tunnels 
                     if ((m_ReplaceMode ||
                         m_SetEndElevationsToZero.HasComponent(entity)) &&
-                        (upgraded.m_Flags.m_General & CompositionFlags.General.Elevated) != CompositionFlags.General.Elevated)
+                        (upgraded.m_Flags.m_General & (CompositionFlags.General.Elevated | CompositionFlags.General.Tunnel)) == 0)
                     {
                         if (m_ElevationLookup.HasComponent(edge.m_End))
                         {
@@ -288,10 +288,12 @@ namespace Anarchy.Systems.NetworkAnarchy
                         buffer.RemoveComponent<Elevation>(entity);
                     }
 
-                    if (m_ReplaceMode ||
-                        m_SetEndElevationsToZero.HasComponent(entity) ||
-                        upgraded.m_Flags.m_Left == CompositionFlags.Side.Raised ||
-                        upgraded.m_Flags.m_Right == CompositionFlags.Side.Raised)
+                    bool isTunnel = (upgraded.m_Flags.m_General & CompositionFlags.General.Tunnel) == CompositionFlags.General.Tunnel;
+                    if (!isTunnel &&
+                        (m_ReplaceMode ||
+                         m_SetEndElevationsToZero.HasComponent(entity) ||
+                         upgraded.m_Flags.m_Left == CompositionFlags.Side.Raised ||
+                         upgraded.m_Flags.m_Right == CompositionFlags.Side.Raised))
                     {
                         buffer.AddComponent<UpdateNextFrame>(entity);
                         if (m_ConnectedEdgeLookup.TryGetBuffer(edge.m_End, out DynamicBuffer<ConnectedEdge> endConnectedEdges))
